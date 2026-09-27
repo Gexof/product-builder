@@ -24,8 +24,13 @@ function App() {
   ));
 
   const renderFormInputList = formInputsList.map((input) => (
-    <div className="flex flex-col">
-      <label htmlFor={input.label}>{input.label}</label>
+    <div className="flex flex-col mt-2">
+      <label
+        htmlFor={input.label}
+        className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300"
+      >
+        {input.label}
+      </label>
       <Input type={input.type} name={input.name} id={input.id} />
     </div>
   ));
@@ -57,7 +62,7 @@ function App() {
 
       <Modal isOpen={isOpen} closeModal={closeModal} title="Add a new product">
         {renderFormInputList}
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 mt-5">
           <Button className="bg-gray-500">Cancel</Button>
           <Button className="bg-indigo-700">Submit</Button>
         </div>
