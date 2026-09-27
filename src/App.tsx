@@ -1,8 +1,9 @@
 import { useState } from "react";
 import ProductCard from "./components/ProductCard";
 import Modal from "./components/ui/Modal";
-import { productList } from "./data";
+import { formInputsList, productList } from "./data";
 import Button from "./components/ui/Button";
+import Input from "./components/ui/Input";
 
 function App() {
   /* ---------- STATE ---------- */
@@ -13,13 +14,20 @@ function App() {
     setIsOpen(true);
   }
 
-  function close() {
+  function closeModal() {
     setIsOpen(false);
   }
 
   /* ---------- RENDER ---------- */
   const renderProductList = productList.map((product) => (
     <ProductCard key={product.id} product={product} />
+  ));
+
+  const renderFormInputList = formInputsList.map((input) => (
+    <div className="flex flex-col">
+      <label htmlFor={input.label}>{input.label}</label>
+      <Input type={input.type} name={input.name} id={input.id} />
+    </div>
   ));
 
   return (
@@ -47,7 +55,8 @@ function App() {
         </div>
       </div>
 
-      <Modal isOpen={isOpen} closeModal={close} title="Add a new product">
+      <Modal isOpen={isOpen} closeModal={closeModal} title="Add a new product">
+        {renderFormInputList}
         <div className="flex items-center space-x-3">
           <Button className="bg-gray-500">Cancel</Button>
           <Button className="bg-indigo-700">Submit</Button>
