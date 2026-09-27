@@ -1,22 +1,33 @@
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 import ProductCard from "./components/ProductCard";
 import Modal from "./components/ui/Modal";
 import { formInputsList, productList } from "./data";
 import Button from "./components/ui/Button";
 import Input from "./components/ui/Input";
+import type { IProduct } from "./interfaces";
 
 function App() {
   /* ---------- STATE ---------- */
+  const [product, setProduct] = useState<IProduct>({
+    title: "",
+    description: "",
+    imageURL: "",
+    price: "",
+    colors: [],
+    category: { name: "", imageURL: "" },
+  });
+
   const [isOpen, setIsOpen] = useState(false);
 
   /* ---------- HANDLER ---------- */
-  function openModal() {
-    setIsOpen(true);
-  }
+  const openModal = () => setIsOpen(true);
 
-  function closeModal() {
-    setIsOpen(false);
-  }
+  const closeModal = () => setIsOpen(false);
+
+  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = e.target;
+    setProduct({ ...product, [name]: value });
+  };
 
   /* ---------- RENDER ---------- */
   const renderProductList = productList.map((product) => (
@@ -31,7 +42,13 @@ function App() {
       >
         {input.label}
       </label>
-      <Input type={input.type} name={input.name} id={input.id} />
+      <Input
+        type={input.type}
+        name={input.name}
+        id={input.id}
+        value={product[input.name]}
+        onChange={onChangeHandler}
+      />
     </div>
   ));
 
@@ -61,11 +78,13 @@ function App() {
       </div>
 
       <Modal isOpen={isOpen} closeModal={closeModal} title="Add a new product">
-        {renderFormInputList}
-        <div className="flex items-center space-x-3 mt-5">
-          <Button className="bg-gray-500">Cancel</Button>
-          <Button className="bg-indigo-700">Submit</Button>
-        </div>
+        <form>
+          {renderFormInputList}
+          <div className="flex items-center space-x-3 mt-5">
+            <Button className="bg-gray-500">Cancel</Button>
+            <Button className="bg-indigo-700">Submit</Button>
+          </div>
+        </form>
       </Modal>
     </main>
   );
