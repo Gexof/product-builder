@@ -31,6 +31,10 @@ function App() {
     price: "",
   });
 
+  const [tempColors, setTempColors] = useState<string[]>([]);
+
+  console.log(tempColors);
+
   /* ---------- HANDLER ---------- */
   const openModal = () => setIsOpen(true);
 
@@ -98,7 +102,17 @@ function App() {
   ));
 
   const renderProductColors = colors.map((color) => (
-    <CircleColor key={color} color={color} />
+    <CircleColor
+      key={color}
+      color={color}
+      onClick={() => {
+        if (tempColors.includes(color)) {
+          setTempColors((prev) => prev.filter((item) => item !== color));
+          return;
+        }
+        setTempColors((prev) => [...prev, color]);
+      }}
+    />
   ));
 
   return (
@@ -130,8 +144,20 @@ function App() {
         <form onSubmit={submitHandler}>
           {renderFormInputList}
 
-          <div className="flex items-center space-x-2 mt-3">
+          <div className="flex items-center flex-wrap space-x-2 mt-3">
             {renderProductColors}
+          </div>
+
+          <div className="flex items-center flex-wrap space-x-2 mt-3">
+            {tempColors.map((color) => (
+              <span
+                key={color}
+                className="p-1 mr-1 mb-1 text-xs rounded-md text-white"
+                style={{ backgroundColor: color }}
+              >
+                {color}
+              </span>
+            ))}
           </div>
 
           <div className="flex items-center space-x-3 mt-5">
