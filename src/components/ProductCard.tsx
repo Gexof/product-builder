@@ -1,5 +1,6 @@
 import type { IProduct } from "../interfaces";
 import { txtSlicer } from "../utils/functions";
+import CircleColor from "./CircleColor";
 import Image from "./Image";
 import Button from "./ui/Button";
 
@@ -8,7 +9,12 @@ interface IProps {
 }
 
 const ProductCard = ({ product }: IProps) => {
-  const { title, description, imageURL, price, category } = product;
+  const { title, description, imageURL, price, category, colors } = product;
+
+  /* ---------- RENDER ---------- */
+  const renderProductColors = colors.map((color) => (
+    <CircleColor key={color} color={color} />
+  ));
 
   return (
     <div className="group w-full max-w-sm overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-gray-800 dark:bg-gray-900">
@@ -47,16 +53,12 @@ const ProductCard = ({ product }: IProps) => {
         </div>
 
         {/* Colors */}
-        <div className="mb-5 flex items-center gap-3">
+        <div className="mb-5 flex flex-wrap items-center gap-3">
           <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
             Colors:
           </span>
 
-          <span className="h-5 w-5 cursor-pointer rounded-full bg-indigo-500 ring-2 ring-transparent transition-all hover:scale-110 hover:ring-indigo-300" />
-
-          <span className="h-5 w-5 cursor-pointer rounded-full bg-yellow-500 ring-2 ring-transparent transition-all hover:scale-110 hover:ring-yellow-300" />
-
-          <span className="h-5 w-5 cursor-pointer rounded-full bg-red-500 ring-2 ring-transparent transition-all hover:scale-110 hover:ring-red-300" />
+          {renderProductColors}
         </div>
 
         {/* Price */}
