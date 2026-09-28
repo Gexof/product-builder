@@ -10,6 +10,7 @@ import ErrorMsg from "./components/ui/ErrorMsg";
 import CircleColor from "./components/CircleColor";
 
 import { v4 as uuid } from "uuid";
+import SelectCat from "./components/ui/SelectCat";
 
 function App() {
   const defaultProductObj = {
@@ -174,6 +175,8 @@ function App() {
               </span>
             ))}
           </div>
+
+          <SelectCat />
 
           <div className="flex items-center space-x-3 mt-5">
             <Button className="bg-gray-500" onClick={onCancel}>
