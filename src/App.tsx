@@ -1,7 +1,7 @@
 import { useState, type ChangeEvent, type SubmitEvent } from "react";
 import ProductCard from "./components/ProductCard";
 import Modal from "./components/ui/Modal";
-import { colors, formInputsList, productList } from "./data";
+import { categories, colors, formInputsList, productList } from "./data";
 import Button from "./components/ui/Button";
 import Input from "./components/ui/Input";
 import type { IProduct } from "./interfaces";
@@ -38,7 +38,7 @@ function App() {
 
   const [tempColors, setTempColors] = useState<string[]>([]);
 
-  console.log(tempColors);
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
 
   /* ---------- HANDLER ---------- */
   const openModal = () => setIsOpen(true);
@@ -68,16 +68,18 @@ function App() {
       Object.values(errors).some((value) => value === "") &&
       Object.values(errors).every((value) => value === "");
 
-    console.log(hasErrorMsg);
-    console.log(errors);
-
     if (!hasErrorMsg) {
       setErrors(errors);
       return;
     }
 
     setProducts((prev) => [
-      { ...product, id: uuid(), colors: tempColors },
+      {
+        ...product,
+        id: uuid(),
+        colors: tempColors,
+        category: selectedCategory,
+      },
       ...prev,
     ]);
 
@@ -176,7 +178,10 @@ function App() {
             ))}
           </div>
 
-          <SelectCat />
+          <SelectCat
+            selected={selectedCategory}
+            setSelected={setSelectedCategory}
+          />
 
           <div className="flex items-center space-x-3 mt-5">
             <Button className="bg-gray-500" onClick={onCancel}>

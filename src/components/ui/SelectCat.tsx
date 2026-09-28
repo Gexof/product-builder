@@ -8,12 +8,15 @@ import {
 } from "@headlessui/react";
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx";
-import { useState } from "react";
 import { categories } from "../../data";
+import type { ICategory } from "../../interfaces";
 
-const SelectCat = () => {
-  const [selected, setSelected] = useState(categories[0]);
+interface IProps {
+  selected: ICategory;
+  setSelected: (category: ICategory) => void;
+}
 
+const SelectCat = ({ selected, setSelected }: IProps) => {
   return (
     <div className="w-full max-w-md">
       <Field>
