@@ -1,12 +1,13 @@
 import { useState, type ChangeEvent, type SubmitEvent } from "react";
 import ProductCard from "./components/ProductCard";
 import Modal from "./components/ui/Modal";
-import { formInputsList, productList } from "./data";
+import { colors, formInputsList, productList } from "./data";
 import Button from "./components/ui/Button";
 import Input from "./components/ui/Input";
 import type { IProduct } from "./interfaces";
 import { productValidation } from "./validation";
 import ErrorMsg from "./components/ui/ErrorMsg";
+import CircleColor from "./components/CircleColor";
 
 function App() {
   const defaultProductObj = {
@@ -96,6 +97,10 @@ function App() {
     </div>
   ));
 
+  const renderProductColors = colors.map((color) => (
+    <CircleColor key={color} color={color} />
+  ));
+
   return (
     <main className="min-h-screen bg-gray-50 px-4 py-10 dark:bg-gray-950">
       <Button
@@ -124,6 +129,11 @@ function App() {
       <Modal isOpen={isOpen} closeModal={closeModal} title="Add a new product">
         <form onSubmit={submitHandler}>
           {renderFormInputList}
+
+          <div className="flex items-center space-x-2 mt-3">
+            {renderProductColors}
+          </div>
+
           <div className="flex items-center space-x-3 mt-5">
             <Button className="bg-gray-500" onClick={onCancel}>
               Cancel
