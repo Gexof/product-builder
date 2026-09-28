@@ -5,6 +5,8 @@ import { formInputsList, productList } from "./data";
 import Button from "./components/ui/Button";
 import Input from "./components/ui/Input";
 import type { IProduct } from "./interfaces";
+import { productValidation } from "./validation";
+import ErrorMsg from "./components/ui/ErrorMsg";
 
 function App() {
   const defaultProductObj = {
@@ -21,6 +23,13 @@ function App() {
 
   const [isOpen, setIsOpen] = useState(false);
 
+  const [errors, setErrors] = useState({
+    title: "",
+    description: "",
+    imageURL: "",
+    price: "",
+  });
+
   /* ---------- HANDLER ---------- */
   const openModal = () => setIsOpen(true);
 
@@ -29,10 +38,33 @@ function App() {
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setProduct({ ...product, [name]: value });
+
+    setErrors({ ...errors, [name]: "" });
   };
 
   const submitHandler = (e: SubmitEvent<HTMLFormElement>): void => {
     e.preventDefault();
+
+    const { title, description, imageURL, price } = product;
+
+    const errors = productValidation({
+      title,
+      description,
+      imageURL,
+      price,
+    });
+
+    const hasErrorMsg =
+      Object.values(errors).some((value) => value === "") &&
+      Object.values(errors).every((value) => value === "");
+
+    console.log(hasErrorMsg);
+    console.log(errors);
+
+    if (!hasErrorMsg) {
+      setErrors(errors);
+      return;
+    }
   };
 
   const onCancel = () => {
@@ -60,6 +92,7 @@ function App() {
         value={product[input.name]}
         onChange={onChangeHandler}
       />
+      <ErrorMsg msg={errors[input.name]} />
     </div>
   ));
 
